@@ -24,14 +24,23 @@ class _HomeScreenState extends State<HomeScreen> {
     return db;
   }
 
+  Future<void> deleteNote(int id) async {
+    Database db = await DatabaseHelper.dbHelper();
+    await db.delete("NoteBook", where: "id = ?", whereArgs: [id]);
+
+    dataList = await db.rawQuery("SELECT * FROM NoteBook");
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: Colors.deepPurple,
         foregroundColor: Colors.white,
-        title: Text(
-          "NOTE Book",
+        title: const Text(
+          "NOTE BOOK",
           style: TextStyle(
             letterSpacing: 3,
             fontSize: 20,
@@ -57,9 +66,54 @@ class _HomeScreenState extends State<HomeScreen> {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Card(
+                      color: Colors.white,
                       child: ListTile(
-                        title: Text(dataList[index]["title"]),
-                        subtitle: Text(dataList[index]["description"]),
+                        leading: CircleAvatar(
+                          child: Text(dataList[index]["id"].toString()),
+                        ),
+                        title: Text(
+                          dataList[index]["title"],
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20,
+                              letterSpacing: 1),
+                        ),
+                        subtitle: Text(
+                          dataList[index]["description"],
+                          style: const TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 17,
+                              letterSpacing: 1),
+                        ),
+                        trailing: IconButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text("Delete Note ?"),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("Cencel")),
+                                      TextButton(
+                                          onPressed: () {
+                                            deleteNote(dataList[index]["id"])
+                                                .then(
+                                              (value) {
+                                                Navigator.pop(context);
+                                              },
+                                            );
+                                          },
+                                          child: const Text("Ok"))
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            icon: const Icon(Icons.delete)),
                       ),
                     ),
                   );
@@ -76,13 +130,13 @@ class _HomeScreenState extends State<HomeScreen> {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (context) => AddNote(),
+                builder: (context) => const AddNotes(),
               ),
               (route) => false,
             );
           },
-          label: Text("Add"),
-          icon: Icon(Icons.add)),
+          label: const Text("Add"),
+          icon: const Icon(Icons.add)),
     );
   }
 }

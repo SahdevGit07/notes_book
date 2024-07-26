@@ -5,7 +5,7 @@ import 'package:notes_book/Screen/splas_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // intialized  database.
- await DatabaseHelper.dbHelper();
+  await DatabaseHelper.dbHelper();
   runApp(const MyApp());
 }
 

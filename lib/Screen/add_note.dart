@@ -4,14 +4,14 @@ import 'package:sqflite/sqflite.dart';
 
 import 'SqFlite/database_helper.dart';
 
-class AddNote extends StatefulWidget {
-  const AddNote({Key? key}) : super(key: key);
+class AddNotes extends StatefulWidget {
+  const AddNotes({super.key});
 
   @override
-  State<AddNote> createState() => _AddNoteState();
+  State<AddNotes> createState() => _AddNotesState();
 }
 
-class _AddNoteState extends State<AddNote> {
+class _AddNotesState extends State<AddNotes> {
   TextEditingController titelController = TextEditingController();
   TextEditingController descController = TextEditingController();
 
@@ -22,7 +22,7 @@ class _AddNoteState extends State<AddNote> {
         backgroundColor: Colors.deepPurple,
         foregroundColor: Colors.white,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "Add Notes",
           style: TextStyle(
             fontWeight: FontWeight.w500,
@@ -39,11 +39,11 @@ class _AddNoteState extends State<AddNote> {
             children: [
               TextFormField(
                 controller: titelController,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.w500,
                 ),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelStyle: TextStyle(
                     fontSize: 25,
                     letterSpacing: 3,
@@ -58,11 +58,11 @@ class _AddNoteState extends State<AddNote> {
                 child: TextFormField(
                   controller: descController,
                   maxLines: 3,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.w500,
                   ),
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelStyle: TextStyle(
                       fontSize: 25,
                       letterSpacing: 3,
@@ -82,7 +82,7 @@ class _AddNoteState extends State<AddNote> {
                 ),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    fixedSize: Size(300, 50),
+                    fixedSize: const Size(300, 50),
                     backgroundColor: Colors.deepPurple,
                     foregroundColor: Colors.white,
                   ),
@@ -95,13 +95,13 @@ class _AddNoteState extends State<AddNote> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => HomeScreen(),
+                            builder: (context) => const HomeScreen(),
                           ),
                         );
                       },
                     );
                   },
-                  child: Text("Save"),
+                  child: const Text("Save"),
                 ),
               ),
             ],
@@ -119,7 +119,5 @@ class _AddNoteState extends State<AddNote> {
 
     await db.rawInsert(
         "INSERT INTO NoteBook(title,description) VALUES('$title','$description')");
-
-    print("Data successfully inserted...");
   }
 }
